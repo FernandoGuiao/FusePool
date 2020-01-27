@@ -17,8 +17,14 @@ public class Counter : MonoBehaviour {
 	public int difficultyAdd;
 	public bool lockMaxBalls;
 	public GameObject loseScreen;
+	public GameObject NewHiScoreScreen;
 	public GameObject maxBallsFireworks;
 	private float lastMaxBalls;
+	public bool newHiScore;
+	public string playerName;
+
+
+	dreamloLeaderBoard dl;
 
 	void Start()
 	{
@@ -28,9 +34,10 @@ public class Counter : MonoBehaviour {
 		bool isLastBall = false;
 		lockMaxBalls = false;
 		lastMaxBalls = maxBalls;
+		newHiScore = false;
 
 	
-		print(PlayerPrefs.GetInt("SaveBest", 0).ToString());
+		//print(PlayerPrefs.GetInt("SaveBest", 0).ToString());
 		if (PlayerPrefs.HasKey("SaveBest"))
 			{
 			GameObject.FindWithTag("HighScore").GetComponent<Text>().text = PlayerPrefs.GetInt("SaveBest", 0).ToString();
@@ -164,11 +171,12 @@ public class Counter : MonoBehaviour {
 		}
 
 
-		//Salvar HighSocre
+		//Salvar HighScore
 		if (fusions > PlayerPrefs.GetInt("SaveBest", 0))
 		{
 			PlayerPrefs.SetInt("SaveBest", fusions);
 			PlayerPrefs.Save();
+			newHiScore = true;
 
 		}
 
@@ -179,9 +187,51 @@ public class Counter : MonoBehaviour {
 
 	void YouLose()
 	{
+		GameObject[] LooseText;
+
+
 		GameObject.FindWithTag("Timer").GetComponent<Text>().enabled = false;
 		loseScreen.SetActive(true);
 
+
+		if(newHiScore)
+		{
+			NewHiScoreScreen.SetActive(true);
+
+			GameObject.FindWithTag("EndGameTxt").GetComponent<Text>().color = Color.yellow;
+			//	GameObject.FindWithTag("EndGameTxt").GetComponentInChildren<Text>().color = new Color (0.9f,0.82f,0.0f,1f); // procura no próprio objeto também;
+		}
+
+
+
+		LooseText = GameObject.FindGameObjectsWithTag("EndGameTxt");
+
+		foreach (GameObject text in LooseText)
+		{
+			text.GetComponent<Text>().text = fusions.ToString(); 
+		}
+	}
+
+
+	//Informar o Hiscore
+	public void SubmitHiScore()
+
+	{
+		
+		this.dl = dreamloLeaderBoard.GetSceneDreamloLeaderboard();
+		if (dl.publicCode == "") Debug.LogError("You forgot to set the publicCode variable");
+		if (dl.privateCode == "") Debug.LogError("You forgot to set the privateCode variable");
+		GameObject.FindWithTag("NewHiScoreButton").GetComponent<Button>().interactable = false;
+		GameObject.FindWithTag("NewHiScoreButton").GetComponentInChildren<Text>().text = "Done!";
+
+		dl.AddScore(this.playerName, fusions);
+
+	}
+
+	public void ActivateSubmitHiScoreBtn()
+	{
+		GameObject.FindWithTag("NewHiScoreButton").GetComponent<Button>().interactable = true;
+		playerName = GameObject.FindWithTag("PlayerNameInput").GetComponent<Text>().text;
 	}
 
 
@@ -190,6 +240,7 @@ public class Counter : MonoBehaviour {
 	{
 		PlayerPrefs.DeleteKey("SaveBest");
 		print("ResetHiScr");
+
 	}
 
 
