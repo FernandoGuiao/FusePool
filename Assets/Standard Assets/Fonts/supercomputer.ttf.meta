@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 61c285805eab52d4795a582b2c8c9710
+timeCreated: 1574622126
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Supercomputer
+  fontNames:
+  - Supercomputer
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
