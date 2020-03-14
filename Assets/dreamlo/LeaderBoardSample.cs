@@ -52,8 +52,8 @@ public class LeaderBoardSample : MonoBehaviour {
 	{
 		GUILayoutOption[] width200 = new GUILayoutOption[] {GUILayout.Width(200)};
 		
-		float width = 800;  // Make this wider to add more columns
-		float height = 400;
+		float width = 400;  // Make this wider to add more columns
+		float height = 200;
 
 		Rect r = new Rect((Screen.width / 2) - (width / 2), (Screen.height / 2) - (height), width, height);
 		GUILayout.BeginArea(r, new GUIStyle("box"));
@@ -119,8 +119,29 @@ public class LeaderBoardSample : MonoBehaviour {
 			}
 		}
 		GUILayout.EndArea();
+
+		r.y = r.y + r.height + 20;
+		GUILayout.BeginArea(r, new GUIStyle("box"));
+		GUILayout.BeginHorizontal();
+		GUILayout.Label("Redeem Code: ");
+		this.code = GUILayout.TextField(this.code, width200);
+		
+		if (GUILayout.Button("Redeem"))
+		{
+			this.pc.RedeemCode(this.code);
+		}
+		GUILayout.EndHorizontal();
+
+		GUILayout.Space(50);
+		if (this.pc != null)
+		{
+			GUILayout.Label("State: " + this.pc.state.ToString());
+			GUILayout.Label("Error: " + this.pc.error);
+			GUILayout.Label("Value: " + this.pc.value);
+		}
+
 		GUILayout.EndVertical();
-	
+		GUILayout.EndArea();
 	}
 	
 	

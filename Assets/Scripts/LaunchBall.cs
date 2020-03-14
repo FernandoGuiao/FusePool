@@ -9,6 +9,8 @@ public class LaunchBall : MonoBehaviour {
 	public int shootinPwrCorrector = 1;
 	public bool forceChange;
 
+	public GameObject launchButton;
+
 
 	public Slider slider;
 	public int shootPWR = 50;
@@ -32,7 +34,7 @@ public class LaunchBall : MonoBehaviour {
 
 
 		DestroyExplosion();
-
+		print("Shoot!");
 		activeBall = GameObject.FindGameObjectWithTag("Active");
 	//	activeBall.AddForce(0,0,shootPWR);
 		float shootANG = slider.value;
@@ -52,6 +54,7 @@ public class LaunchBall : MonoBehaviour {
 			lines[i].GetComponent<LineRenderer>().enabled = false;;
 
 		}
+		launchButton.GetComponent<Button>().interactable = false;
 			
 		if (gameObject.GetComponent<Counter>().isLastBall == false)
 		{
@@ -92,13 +95,27 @@ public class LaunchBall : MonoBehaviour {
 			ballSpawner = GameObject.FindGameObjectWithTag("BallSpawner");
 			Instantiate(ballPrefabs[0], ballSpawner.GetComponent<Transform>().position, ballSpawner.GetComponent<Transform>().rotation);
 		
+
+			//StartCoroutine(SpawnGrow());
+
+			activeBall = GameObject.FindGameObjectWithTag("Spawning");
+			activeBall.GetComponent<Rigidbody>().isKinematic = true;
+			activeBall.GetComponent<Transform>().localScale = new Vector3 (0,0,0);
+
+			for ( float i = 0;  i <= 2.1f; i=i+0.1f)
+			{
+				activeBall.GetComponent<Transform>().localScale = new Vector3 (i,i,i);
+				yield return new WaitForSeconds(0.01f);
+			}
+
+			//yield return new WaitForSeconds(waitTime/2);
+			activeBall.tag = "Active";
 			activeBall = GameObject.FindGameObjectWithTag("Active");
-			StartCoroutine(SpawnGrow());
-				
 
 			gameObject.GetComponent<Counter>().ballCount = gameObject.GetComponent<Counter>().ballCount +1;
-			activeBall.GetComponent<Rigidbody>().isKinematic = true;
+
 			GameObject.FindWithTag ("BallSpawner").GetComponentInChildren<LineRenderer>().enabled = true;
+			launchButton.GetComponent<Button>().interactable = true;;
 			print(ballSpawner);
 
 			if (ballSpawner.GetComponent<Transform>().position.z < -49) {shootinPwrCorrector = 1;}

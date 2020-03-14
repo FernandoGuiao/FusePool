@@ -32,6 +32,8 @@ TagManager:
   - NewHiScore
   - NewHiScoreButton
   - PlayerNameInput
+  - Spawning
+  - HiScoreTxtBox
   layers:
   - Default
   - TransparentFX
@@ -50,7 +52,7 @@ TagManager:
   - 
   - 
   - 
-  - 
+  - intro
   - 
   - 
   - 

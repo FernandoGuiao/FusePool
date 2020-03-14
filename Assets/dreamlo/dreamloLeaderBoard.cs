@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class dreamloLeaderBoard : MonoBehaviour {
 	
-	string dreamloWebserviceURL = "http://dreamlo.com/lb/";
+	string dreamloWebserviceURL = "https://www.dreamlo.com/lb/";
 	
 	public string privateCode = "";
 	public string publicCode = "";
@@ -114,6 +114,7 @@ public class dreamloLeaderBoard : MonoBehaviour {
 		WWW www = new WWW(dreamloWebserviceURL + privateCode + "/add-pipe/" + WWW.EscapeURL(playerName) + "/" + totalScore.ToString());
 		yield return www;
 		highScores = www.text;
+		print(highScores);
 	}
 	
 	IEnumerator AddScoreWithPipe(string playerName, int totalScore, int totalSeconds)
@@ -139,7 +140,9 @@ public class dreamloLeaderBoard : MonoBehaviour {
 	{
 		highScores = "";
 		WWW www = new WWW(dreamloWebserviceURL +  publicCode  + "/pipe");
+	
 		yield return www;
+
 		highScores = www.text;
 	}
 	
@@ -160,9 +163,12 @@ public class dreamloLeaderBoard : MonoBehaviour {
 	
 	public string[] ToStringArray()
 	{
+//		print(this.highScores);
 		if (this.highScores == null) return null;
 		if (this.highScores == "") return null;
-		
+
+
+
 		string[] rows = this.highScores.Split(new char[] {'\n'}, System.StringSplitOptions.RemoveEmptyEntries);
 		return rows;
 	}
@@ -170,7 +176,7 @@ public class dreamloLeaderBoard : MonoBehaviour {
 	public List<Score> ToListLowToHigh()
 	{
 		Score[] scoreList = this.ToScoreArray();
-		
+
 		if (scoreList == null) return new List<Score>();
 		
 		List<Score> genericList = new List<Score>(scoreList);
@@ -183,6 +189,9 @@ public class dreamloLeaderBoard : MonoBehaviour {
 	public List<Score> ToListHighToLow()
 	{
 		Score[] scoreList = this.ToScoreArray();
+
+		//print(scoreList);
+		//print("olar");
 		
 		if (scoreList == null) return new List<Score>();
 

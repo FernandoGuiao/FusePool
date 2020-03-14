@@ -223,10 +223,14 @@ public class Counter : MonoBehaviour {
 		if (dl.privateCode == "") Debug.LogError("You forgot to set the privateCode variable");
 		GameObject.FindWithTag("NewHiScoreButton").GetComponent<Button>().interactable = false;
 		GameObject.FindWithTag("NewHiScoreButton").GetComponentInChildren<Text>().text = "Done!";
+		GameObject.FindWithTag("HiScoreTxtBox").GetComponent<InputField>().interactable = false;
 
-		dl.AddScore(this.playerName, fusions);
+
+		dl.AddScore(this.playerName, fusions, GameObject.FindWithTag("GameController").GetComponent<Counter>().difficultyAdd);
 
 	}
+
+
 
 	public void ActivateSubmitHiScoreBtn()
 	{
