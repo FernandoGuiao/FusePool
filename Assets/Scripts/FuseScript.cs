@@ -41,8 +41,10 @@ public class FuseScript : MonoBehaviour {
 			else YouWin();
 
 		}
-
-
+		//if (GameObject.FindGameObjectWithTag("GameController").GetComponent<Counter>().fusions != 0)
+		//{
+		//	GameObject.FindGameObjectWithTag("GameController").GetComponent<MemoryState>().SaveGame();
+		//}
 	}
 
 	void YouWin()

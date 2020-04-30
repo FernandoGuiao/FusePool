@@ -8,7 +8,7 @@ Material:
   m_PrefabInternal: {fileID: 0}
   m_Name: item0010s
   m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: 
+  m_ShaderKeywords: _GLOSSYREFLECTIONS_OFF
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -61,7 +61,7 @@ Material:
     - _DstBlend: 0
     - _GlossMapScale: 1
     - _Glossiness: 0.881
-    - _GlossyReflections: 1
+    - _GlossyReflections: 0
     - _Metallic: 0.332
     - _Mode: 0
     - _OcclusionStrength: 1
@@ -72,5 +72,5 @@ Material:
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 0.2205882, g: 0.14435552, b: 0.14435552, a: 1}
+    - _Color: {r: 0.66176474, g: 0.49145764, b: 0.49145764, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}

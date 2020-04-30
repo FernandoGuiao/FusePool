@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UI;
 public class Counter : MonoBehaviour {
 
@@ -9,7 +10,10 @@ public class Counter : MonoBehaviour {
 	public int fusions;
 	public int timerLoseDefault;
 	float timerLose;
+	float timerLoseReward;
+	public bool hadReward;
 	bool isWaiting;
+	bool isWaitingReward;
 	public bool isLastBall;
 	public float maxBalls;
 	public GameObject endGameScreen;
@@ -22,6 +26,9 @@ public class Counter : MonoBehaviour {
 	private float lastMaxBalls;
 	public bool newHiScore;
 	public string playerName;
+	public int rewardAdd;
+	public int scoreToSave;
+
 
 
 	dreamloLeaderBoard dl;
@@ -33,10 +40,15 @@ public class Counter : MonoBehaviour {
 		isWaiting = false;
 		bool isLastBall = false;
 		lockMaxBalls = false;
+		isWaitingReward = false;
 		lastMaxBalls = maxBalls;
 		newHiScore = false;
+		hadReward = false;
+		rewardAdd = 0;
+		timerLoseReward = 20;
+		scoreToSave = 100;
 
-	
+
 		//print(PlayerPrefs.GetInt("SaveBest", 0).ToString());
 		if (PlayerPrefs.HasKey("SaveBest"))
 			{
@@ -59,6 +71,7 @@ public class Counter : MonoBehaviour {
 		GameObject.FindWithTag("HealthText").GetComponent<Text>().text = ballCount.ToString();
 		GameObject.FindWithTag("Score").GetComponent<Text>().text = fusions.ToString();
 		GameObject.FindWithTag("Timer").GetComponent<Text>().text = timerLose.ToString("0.0");
+		GameObject.FindWithTag("RewardTimer").GetComponent<Text>().text = timerLoseReward.ToString("0.0");
 		GameObject.FindWithTag("MaxBallsTxt").GetComponent<Text>().text = maxBalls.ToString();
 
 
@@ -71,7 +84,7 @@ public class Counter : MonoBehaviour {
 //    deve mudar  de acordo :laranja 5, terra 11
 		if(GameObject.FindGameObjectsWithTag("9").Length >= 1 )
 		{
-			maxBalls=12+difficultyAdd;
+			maxBalls=12+difficultyAdd+ rewardAdd;
 			GameObject.FindWithTag("Health").GetComponent<Slider>().maxValue = maxBalls;
 			lockMaxBalls = true;
 		}
@@ -81,62 +94,60 @@ public class Counter : MonoBehaviour {
 			if (lockMaxBalls == false) 
 			{
 
-				//fireworks
-				;
+				
 				if (maxBalls != lastMaxBalls)
 				{
 					lastMaxBalls = maxBalls;
 					maxBallsFireworks.SetActive(false);
 					maxBallsFireworks.SetActive(true);
-				//	gameObject.GetComponent<Ads>().SimpleAdShow();
 
 				}
 
 				if(GameObject.FindGameObjectsWithTag("8").Length >= 1)
 				{
-					maxBalls=11+difficultyAdd;
+					maxBalls=11+difficultyAdd + rewardAdd;
 					GameObject.FindWithTag("Health").GetComponent<Slider>().maxValue = maxBalls;
 				}	
 				else
 				{
 					if(GameObject.FindGameObjectsWithTag("7").Length >= 1 )
 					{
-						maxBalls=10+difficultyAdd;
+						maxBalls=10+ difficultyAdd + rewardAdd;
 						GameObject.FindWithTag("Health").GetComponent<Slider>().maxValue = maxBalls;
 					}	
 					else
 					{
 						if(GameObject.FindGameObjectsWithTag("6").Length >= 1 )
 						{
-							maxBalls=9+difficultyAdd;
+							maxBalls=9+ difficultyAdd + rewardAdd;
 							GameObject.FindWithTag("Health").GetComponent<Slider>().maxValue = maxBalls;
 						}	
 						else
 						{
 							if(GameObject.FindGameObjectsWithTag("5").Length >= 1 )
 							{
-								maxBalls=8+difficultyAdd;
+								maxBalls=8+ difficultyAdd + rewardAdd;
 								GameObject.FindWithTag("Health").GetComponent<Slider>().maxValue = maxBalls;
 							}	
 							else
 							{
 								if(GameObject.FindGameObjectsWithTag("4").Length >= 1 )
 								{
-									maxBalls=7+difficultyAdd;
+									maxBalls=7+ difficultyAdd + rewardAdd;
 									GameObject.FindWithTag("Health").GetComponent<Slider>().maxValue = maxBalls;
 								}	
 								else
 								{
 									if(GameObject.FindGameObjectsWithTag("3").Length >= 1 )
 									{
-										maxBalls=6+difficultyAdd;
+										maxBalls=6+ difficultyAdd + rewardAdd;
 										GameObject.FindWithTag("Health").GetComponent<Slider>().maxValue = maxBalls;
 									}	
 									else
 									{
 										if(GameObject.FindGameObjectsWithTag("2").Length >= 1 )
 										{
-											maxBalls=5+difficultyAdd;
+											maxBalls=5+ difficultyAdd + rewardAdd;
 											GameObject.FindWithTag("Health").GetComponent<Slider>().maxValue = maxBalls;
 										}	
 
@@ -185,7 +196,7 @@ public class Counter : MonoBehaviour {
 
 
 
-	void YouLose()
+	public void YouLose()
 	{
 		GameObject[] LooseText;
 
@@ -236,6 +247,8 @@ public class Counter : MonoBehaviour {
 	{
 		GameObject.FindWithTag("NewHiScoreButton").GetComponent<Button>().interactable = true;
 		playerName = GameObject.FindWithTag("PlayerNameInput").GetComponent<Text>().text;
+
+
 	}
 
 
@@ -247,8 +260,30 @@ public class Counter : MonoBehaviour {
 
 	}
 
+	public void CallWaitToLoseReward()
+	{
+		print("call waittolose reward form counter");
+		StartCoroutine (WaitToLoseReward());
+	}
 
 
+	public void AskForAd()
+	{
+		this.GetComponent<MenuControl>().ToggleAskAdScreen();
+	}
+
+	public void SavingCounter()
+	{
+		if (fusions >= scoreToSave && !isLastBall)
+		{
+			gameObject.GetComponent<MemoryState>().SaveGame();
+			scoreToSave += 100;
+		}
+		if (isLastBall)
+		{
+		 gameObject.GetComponent<MemoryState>().DelGame(); 
+		}
+	}
 
 	public IEnumerator WaitToLose()
 	{
@@ -261,7 +296,7 @@ public class Counter : MonoBehaviour {
 
 		GameObject activeBall = GameObject.FindGameObjectWithTag("Active");
 
-		print(activeBall + " <- active ball =========== Ball Diff ->" + (maxBalls - ballCount));
+		//print(activeBall + " <- active ball =========== Ball Diff ->" + (maxBalls - ballCount));
 
 		if ((activeBall == null) && (ballCount < maxBalls))
 		{
@@ -274,8 +309,12 @@ public class Counter : MonoBehaviour {
 
 		if ((timerLose <= 0)&&(isWaiting == true) )
 		{
-			YouLose();
+			if (hadReward == true)
+			{ YouLose();}
+			else { AskForAd(); }
+			
 			isWaiting = false;
+			timerLose = 10;
 		} 
 
 
@@ -284,5 +323,39 @@ public class Counter : MonoBehaviour {
 
 	}
 
+	public IEnumerator WaitToLoseReward()
+	{
+		print("Waiting to lose reward!!");
+
+		GameObject.FindWithTag("RewardTimer").GetComponent<Text>().enabled = true;
+
+		GameObject.FindWithTag("RewardTimerImg").GetComponent<Image>().enabled = true;
+
+		isWaitingReward = true;
+		float waitTime = 0.1f;
+		yield return new WaitForSeconds(waitTime);
+		timerLoseReward = timerLoseReward - waitTime;
+
+
+		
+
+		if ((timerLoseReward <= 0) && (isWaitingReward == true))
+		{
+			
+			rewardAdd = 0;
+			maxBalls--;
+			isWaitingReward = false;
+			timerLoseReward = 20;
+			GameObject.FindWithTag("RewardTimer").GetComponent<Text>().enabled = false;
+			GameObject.FindWithTag("RewardTimerImg").GetComponent<Image>().enabled = false;
+		}
+
+
+		if (isWaitingReward == true) { StartCoroutine(WaitToLoseReward()); };
+
+
+	}
+
+	
 
 }

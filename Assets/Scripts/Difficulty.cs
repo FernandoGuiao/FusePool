@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+
 
 public class Difficulty : MonoBehaviour {
 
@@ -12,6 +14,7 @@ public class Difficulty : MonoBehaviour {
 	}
 	public void HardDiff () {
 		GameObject.FindWithTag("GameController").GetComponent<Counter>().difficultyAdd = 0;
+		GameObject.FindGameObjectWithTag("HardFlag").GetComponent<Image>().enabled = true;
 		iniScreen.SetActive(false);
 	}
 	

@@ -21,10 +21,10 @@ GameObject:
   - component: {fileID: 4805001780656574}
   - component: {fileID: 33439580111132422}
   - component: {fileID: 23731628509620536}
+  - component: {fileID: 135095881992228744}
   - component: {fileID: 54625706276128434}
   - component: {fileID: 114776845683198856}
   - component: {fileID: 114527956144857088}
-  - component: {fileID: 135095881992228744}
   - component: {fileID: 82683641883542568}
   m_Layer: 0
   m_Name: Sphere 9

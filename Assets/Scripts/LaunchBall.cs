@@ -10,6 +10,7 @@ public class LaunchBall : MonoBehaviour {
 	public bool forceChange;
 
 	public GameObject launchButton;
+	public GameObject rotateButton;
 
 
 	public Slider slider;
@@ -32,9 +33,16 @@ public class LaunchBall : MonoBehaviour {
 
 	public void Shoot() {
 
+		//last ball bug fix:
+
+		if (gameObject.GetComponent<Counter>().ballCount >= gameObject.GetComponent<Counter>().maxBalls)
+		{gameObject.GetComponent<Counter>().isLastBall = true; gameObject.GetComponent<MemoryState>().DelGame(); }
+		else
+		{gameObject.GetComponent<Counter>().isLastBall = false;}
+
 
 		DestroyExplosion();
-		print("Shoot!");
+		
 		activeBall = GameObject.FindGameObjectWithTag("Active");
 	//	activeBall.AddForce(0,0,shootPWR);
 		float shootANG = slider.value;
@@ -48,6 +56,9 @@ public class LaunchBall : MonoBehaviour {
 		GameObject[] lines = GameObject.FindGameObjectsWithTag ("Line");
 
 
+
+
+
 		for ( int i = 0;  i <= lines.Length-1; i++)
 		{
 
@@ -55,12 +66,15 @@ public class LaunchBall : MonoBehaviour {
 
 		}
 		launchButton.GetComponent<Button>().interactable = false;
-			
+		rotateButton.GetComponent<Button>().interactable = false;
+
 		if (gameObject.GetComponent<Counter>().isLastBall == false)
 		{
 		StartCoroutine(Spawn());
+		//	print("Call spawn from launchball");
 		}
-		else{StartCoroutine (gameObject.GetComponent<Counter>().WaitToLose());}
+		else{StartCoroutine (gameObject.GetComponent<Counter>().WaitToLose()); print("Call Waittolose from launchball"); }
+
 	}
 		
 
@@ -79,50 +93,59 @@ public class LaunchBall : MonoBehaviour {
 
 
 
-
+	public void CallSpawn()
+	{
+		StartCoroutine(Spawn());
+	}
 
 
 
 
 		public IEnumerator Spawn()
 		{
-
-		if (gameObject.GetComponent<Counter>().ballCount < gameObject.GetComponent<Counter>().maxBalls){
-
-			float waitTime = 1f;
-
-			yield return new WaitForSeconds(waitTime);
-			ballSpawner = GameObject.FindGameObjectWithTag("BallSpawner");
-			Instantiate(ballPrefabs[0], ballSpawner.GetComponent<Transform>().position, ballSpawner.GetComponent<Transform>().rotation);
-		
-
-			//StartCoroutine(SpawnGrow());
-
-			activeBall = GameObject.FindGameObjectWithTag("Spawning");
-			activeBall.GetComponent<Rigidbody>().isKinematic = true;
-			activeBall.GetComponent<Transform>().localScale = new Vector3 (0,0,0);
-
-			for ( float i = 0;  i <= 2.1f; i=i+0.1f)
+		print("spawn()");
+		if (gameObject.GetComponent<Counter>().ballCount < gameObject.GetComponent<Counter>().maxBalls)
 			{
-				activeBall.GetComponent<Transform>().localScale = new Vector3 (i,i,i);
-				yield return new WaitForSeconds(0.01f);
-			}
+				print("spawn() filter");
+				float waitTime = 1f;
 
-			//yield return new WaitForSeconds(waitTime/2);
-			activeBall.tag = "Active";
-			activeBall = GameObject.FindGameObjectWithTag("Active");
+				yield return new WaitForSeconds(waitTime);
+				ballSpawner = GameObject.FindGameObjectWithTag("BallSpawner");
+				Instantiate(ballPrefabs[0], ballSpawner.GetComponent<Transform>().position, ballSpawner.GetComponent<Transform>().rotation);
 
-			gameObject.GetComponent<Counter>().ballCount = gameObject.GetComponent<Counter>().ballCount +1;
 
-			GameObject.FindWithTag ("BallSpawner").GetComponentInChildren<LineRenderer>().enabled = true;
-			launchButton.GetComponent<Button>().interactable = true;;
-			print(ballSpawner);
+				//StartCoroutine(SpawnGrow());
 
-			if (ballSpawner.GetComponent<Transform>().position.z < -49) {shootinPwrCorrector = 1;}
-			else {shootinPwrCorrector = -1;}
+				activeBall = GameObject.FindGameObjectWithTag("Spawning");
+				activeBall.GetComponent<Rigidbody>().isKinematic = true;
+				activeBall.GetComponent<Transform>().localScale = new Vector3(0, 0, 0);
 
-			ChangePWRcorrector();
+				for (float i = 0; i <= 2.1f; i = i + 0.1f)
+				{
+					activeBall.GetComponent<Transform>().localScale = new Vector3(i, i, i);
+					yield return new WaitForSeconds(0.01f);
+				}
 
+				//yield return new WaitForSeconds(waitTime/2);
+				activeBall.tag = "Active";
+				activeBall = GameObject.FindGameObjectWithTag("Active");
+
+				gameObject.GetComponent<Counter>().ballCount = gameObject.GetComponent<Counter>().ballCount + 1;
+
+				GameObject.FindWithTag("BallSpawner").GetComponentInChildren<LineRenderer>().enabled = true;
+				launchButton.GetComponent<Button>().interactable = true;
+				rotateButton.GetComponent<Button>().interactable = true;
+				print(ballSpawner);
+
+				if (ballSpawner.GetComponent<Transform>().position.z < -49) { shootinPwrCorrector = 1; }
+				else { shootinPwrCorrector = -1; }
+
+				ChangePWRcorrector();
+
+			if (gameObject.GetComponent<Counter>().ballCount >= gameObject.GetComponent<Counter>().maxBalls)
+			{ gameObject.GetComponent<Counter>().isLastBall = true; gameObject.GetComponent<MemoryState>().DelGame(); }
+
+			gameObject.GetComponent<Counter>().SavingCounter();
 			}
 		}
 
@@ -142,7 +165,7 @@ public class LaunchBall : MonoBehaviour {
 
 	public IEnumerator ForceVar()
 	{
-		print("startForceVar");
+		//print("startForceVar");
 
 		if (forceChange == true) 
 		{
@@ -154,7 +177,7 @@ public class LaunchBall : MonoBehaviour {
 				float waitTime = 0.1f;
 				yield return new WaitForSeconds(waitTime);
 				StartCoroutine(ForceVar());
-				print("+POWER");
+			//	print("+POWER");
 			}
 			else
 			{
@@ -164,7 +187,7 @@ public class LaunchBall : MonoBehaviour {
 		}
 		else
 		{
-			print("Shooooottt!!!!!!");
+		//	print("Shooooottt!!!!!!");
 			Shoot();
 			shootPWRmod = 0.6f;
 			GameObject.FindGameObjectWithTag("ForceSlider").GetComponent<Slider>().value = shootPWRmod;
