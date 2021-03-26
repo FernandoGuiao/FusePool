@@ -11,6 +11,8 @@ public class MenuControl : MonoBehaviour {
 	public GameObject iniScreen;
 	public GameObject AskAdScreen;
 	public GameObject TextWarningObj;
+	public GameObject Music;
+	public GameObject HTPScreen;
 
 	//Reset The Scene
 	public void Reset()
@@ -43,13 +45,31 @@ public class MenuControl : MonoBehaviour {
 	public void ToggleAskAdScreen()
 	{
 		AskAdScreen.SetActive(!AskAdScreen.activeSelf);
-		print("adscreen toggled");
+		print("ASKadscreen toggled");
+	}
+
+	public void DeactivateAskAdScreen()
+	{
+		AskAdScreen.SetActive(false);
+		print("ASKadscreen deactivated");
+	}
+
+	public void DeactivateHowToPlayScreen()
+	{
+		HTPScreen.SetActive(false);
+		print("HTPScreen deactivated");
 	}
 
 	public void CallTextWaring(string text,  Color color)
 	{
 		StartCoroutine(TextWarning(text, color));
 		print("Txt warning call: " + text);
+	}
+
+	public void MuteMusic()
+	{
+		Music.GetComponent<AudioSource>().mute = !Music.GetComponent<AudioSource>().mute;
+		print("Toggle Mute Music ");
 	}
 
 

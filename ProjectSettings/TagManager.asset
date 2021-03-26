@@ -37,6 +37,7 @@ TagManager:
   - RewardTimer
   - RewardTimerImg
   - HardFlag
+  - AudioInfo
   layers:
   - Default
   - TransparentFX

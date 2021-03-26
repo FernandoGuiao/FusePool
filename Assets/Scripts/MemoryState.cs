@@ -6,7 +6,8 @@ using UnityEngine.UI;
 
 public class MemoryState : MonoBehaviour
 {
-
+	public AudioClip good;
+	public AudioClip bad;
 	int ballnumber = 0;
 
 
@@ -65,6 +66,7 @@ public class MemoryState : MonoBehaviour
 
 		//pontuação
 		PlayerPrefs.SetInt("SavedScore", gameObject.GetComponent<Counter>().fusions);
+
 		//bolar maximas e na mesa
 		PlayerPrefs.SetFloat("MaxBalls", gameObject.GetComponent<Counter>().maxBalls);
 		PlayerPrefs.SetInt("BallCount", gameObject.GetComponent<Counter>().ballCount);
@@ -79,6 +81,10 @@ public class MemoryState : MonoBehaviour
 		}
 		else
 		PlayerPrefs.SetInt("HadReward", 0);
+
+		//score to save
+		PlayerPrefs.SetInt("ScoreToSave", gameObject.GetComponent<Counter>().scoreToSave);
+
 
 		// é última bola
 		print("is last ball PRINT    =>   " + gameObject.GetComponent<Counter>().isLastBall);
@@ -101,6 +107,7 @@ public class MemoryState : MonoBehaviour
 		PlayerPrefs.Save();
 		print("Game Saved");
 		gameObject.GetComponent<MenuControl>().CallTextWaring("Game Saved!", Color.green);
+		gameObject.GetComponent<AudioInfo>().ChooseClip(good);
 	}
 
 
@@ -174,8 +181,10 @@ public class MemoryState : MonoBehaviour
 		gameObject.GetComponent<Counter>().difficultyAdd = PlayerPrefs.GetInt("Difficulty");
 		gameObject.GetComponent<Counter>().ballCount = PlayerPrefs.GetInt("BallCount");
 		gameObject.GetComponent<Counter>().maxBalls = PlayerPrefs.GetFloat("MaxBalls");
+		gameObject.GetComponent<Counter>().scoreToSave = PlayerPrefs.GetInt("ScoreToSave");
 
-		//reward
+
+		//reward',,
 		gameObject.GetComponent<Counter>().rewardAdd = PlayerPrefs.GetInt("AdReward");
 		if (PlayerPrefs.GetInt("HadReward") == 1)
 		{
@@ -223,6 +232,7 @@ public class MemoryState : MonoBehaviour
 			PlayerPrefs.Save();
 			print("Game Deleted");
 			gameObject.GetComponent<MenuControl>().CallTextWaring("Save Deleted", Color.red);
+			gameObject.GetComponent<AudioInfo>().ChooseClip(bad);
 
 		}
 	}

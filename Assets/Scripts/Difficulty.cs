@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class Difficulty : MonoBehaviour {
 
 	public GameObject iniScreen;
-	// Use this for initialization
+
 	public void NormalDiff () {
 		GameObject.FindWithTag("GameController").GetComponent<Counter>().difficultyAdd = 1;
 		iniScreen.SetActive(false);

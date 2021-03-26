@@ -29,7 +29,7 @@ public class FuseScript : MonoBehaviour {
 					clone.GetComponent<Rigidbody>().velocity = gameObject.GetComponent<Rigidbody>().velocity;
 
 					Destroy(gameObject);
-					GameObject.FindGameObjectWithTag("GameController").GetComponent<Counter>().ballCount = GameObject.FindGameObjectWithTag("GameController").GetComponent<Counter>().ballCount -1;
+				//	GameObject.FindGameObjectWithTag("GameController").GetComponent<Counter>().ballCount = GameObject.FindGameObjectWithTag("GameController").GetComponent<Counter>().ballCount -1;
 					GameObject.FindGameObjectWithTag("GameController").GetComponent<Counter>().fusions = GameObject.FindGameObjectWithTag("GameController").GetComponent<Counter>().fusions +1;
 					//se estiver no hard conta mais um
 					if (GameObject.FindWithTag("GameController").GetComponent<Counter>().difficultyAdd == 0)
@@ -55,7 +55,7 @@ public class FuseScript : MonoBehaviour {
 		Text EndGameTxt = GameObject.FindGameObjectWithTag("EndGameTxt").GetComponent<Text>();
 		EndGameTxt.text = "+100! pts";
 		GameObject.FindGameObjectWithTag("GameController").GetComponent<Counter>().fusions = GameObject.FindGameObjectWithTag("GameController").GetComponent<Counter>().fusions +50;
-		GameObject.FindGameObjectWithTag("GameController").GetComponent<Counter>().ballCount = GameObject.FindGameObjectWithTag("GameController").GetComponent<Counter>().ballCount -1;
+		//GameObject.FindGameObjectWithTag("GameController").GetComponent<Counter>().ballCount = GameObject.FindGameObjectWithTag("GameController").GetComponent<Counter>().ballCount -1;
 		GameObject.FindGameObjectWithTag("GameController").GetComponent<Counter>().fusions = GameObject.FindGameObjectWithTag("GameController").GetComponent<Counter>().fusions +1;
 		Destroy(gameObject);
 	}

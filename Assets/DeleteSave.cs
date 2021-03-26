@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DeleteSave : MonoBehaviour
 {
-
+	public AudioClip audioBad;
 	// Use this for initialization
 	void Start()
 	{
@@ -19,6 +19,7 @@ public class DeleteSave : MonoBehaviour
 		PlayerPrefs.DeleteAll();
 
 		PlayerPrefs.SetInt("SaveBest", bestscore);
+
 
 	}
 

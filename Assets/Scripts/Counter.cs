@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UI;
+using System;
 public class Counter : MonoBehaviour {
 
 
@@ -28,6 +29,9 @@ public class Counter : MonoBehaviour {
 	public string playerName;
 	public int rewardAdd;
 	public int scoreToSave;
+	public DateTime departureTime;
+	public AudioClip info;
+		
 
 
 
@@ -46,7 +50,8 @@ public class Counter : MonoBehaviour {
 		hadReward = false;
 		rewardAdd = 0;
 		timerLoseReward = 20;
-		scoreToSave = 100;
+		scoreToSave = 50;
+		departureTime = DateTime.Now;
 
 
 		//print(PlayerPrefs.GetInt("SaveBest", 0).ToString());
@@ -64,6 +69,11 @@ public class Counter : MonoBehaviour {
 			}
 	}
 
+	public void SetDepartureTime()
+    {
+		departureTime = DateTime.Now;
+	}
+
 	void Update()
 	{
 
@@ -74,6 +84,8 @@ public class Counter : MonoBehaviour {
 		GameObject.FindWithTag("RewardTimer").GetComponent<Text>().text = timerLoseReward.ToString("0.0");
 		GameObject.FindWithTag("MaxBallsTxt").GetComponent<Text>().text = maxBalls.ToString();
 
+		CountBallsOnTable();
+
 
 
 
@@ -81,8 +93,8 @@ public class Counter : MonoBehaviour {
 
 //		MaxBalls Changer
 
-//    deve mudar  de acordo :laranja 5, terra 11
-		if(GameObject.FindGameObjectsWithTag("9").Length >= 1 )
+		//    deve mudar  de acordo :laranja 5, terra 11
+		if (GameObject.FindGameObjectsWithTag("9").Length >= 1 )
 		{
 			maxBalls=12+difficultyAdd+ rewardAdd;
 			GameObject.FindWithTag("Health").GetComponent<Slider>().maxValue = maxBalls;
@@ -177,8 +189,13 @@ public class Counter : MonoBehaviour {
 
 		if(ballCount < maxBalls -4){fillBar.GetComponent<Image>().color = Color.cyan;}
 		if(ballCount >= maxBalls -4 & ballCount < maxBalls -2){fillBar.GetComponent<Image>().color = new Vector4(1,0.5f,0,255);}
-		if(ballCount >= maxBalls -2 & ballCount < maxBalls ){fillBar.GetComponent<Image>().color = Color.red;
-	//		print("red");
+
+
+
+
+		
+		if (ballCount >= maxBalls -2 & ballCount < maxBalls ){fillBar.GetComponent<Image>().color = Color.red;
+			//		print("red");			
 		}
 
 
@@ -194,14 +211,32 @@ public class Counter : MonoBehaviour {
 		GameObject.FindWithTag("HighScore").GetComponent<Text>().text = PlayerPrefs.GetInt("SaveBest", 0).ToString();
 	}
 
+	void CountBallsOnTable()
+    {
+		int ballOnTable = 0;
 
+		ballOnTable = ballOnTable + GameObject.FindGameObjectsWithTag("0").Length;
+		ballOnTable = ballOnTable + GameObject.FindGameObjectsWithTag("1").Length;
+		ballOnTable = ballOnTable + GameObject.FindGameObjectsWithTag("2").Length;
+		ballOnTable = ballOnTable + GameObject.FindGameObjectsWithTag("3").Length;
+		ballOnTable = ballOnTable + GameObject.FindGameObjectsWithTag("4").Length;
+		ballOnTable = ballOnTable + GameObject.FindGameObjectsWithTag("5").Length;
+		ballOnTable = ballOnTable + GameObject.FindGameObjectsWithTag("6").Length;
+		ballOnTable = ballOnTable + GameObject.FindGameObjectsWithTag("7").Length;
+		ballOnTable = ballOnTable + GameObject.FindGameObjectsWithTag("8").Length;
+		ballOnTable = ballOnTable + GameObject.FindGameObjectsWithTag("9").Length;
+		ballOnTable = ballOnTable + GameObject.FindGameObjectsWithTag("Active").Length;
+
+		ballCount = ballOnTable;
+
+	}
 
 	public void YouLose()
 	{
 		GameObject[] LooseText;
 
 
-		GameObject.FindWithTag("Timer").GetComponent<Text>().enabled = false;
+		GameObject.FindGameObjectWithTag("Timer").GetComponent<Text>().enabled = false;
 		loseScreen.SetActive(true);
 
 
@@ -277,7 +312,7 @@ public class Counter : MonoBehaviour {
 		if (fusions >= scoreToSave && !isLastBall)
 		{
 			gameObject.GetComponent<MemoryState>().SaveGame();
-			scoreToSave += 100;
+			scoreToSave = scoreToSave + 50;
 		}
 		if (isLastBall)
 		{
@@ -325,7 +360,7 @@ public class Counter : MonoBehaviour {
 
 	public IEnumerator WaitToLoseReward()
 	{
-		print("Waiting to lose reward!!");
+		//print("Waiting to lose reward!!");
 
 		GameObject.FindWithTag("RewardTimer").GetComponent<Text>().enabled = true;
 

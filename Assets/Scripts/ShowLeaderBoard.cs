@@ -65,9 +65,12 @@ public class ShowLeaderBoard : MonoBehaviour {
 
 					clone.transform.SetParent(gameObject.transform);
 					clone.transform.localScale = hSName.transform.localScale;
+					clone.GetComponent<RectTransform>().anchoredPosition = hSName.GetComponent<RectTransform>().anchoredPosition;
 					clone.transform.localRotation = hSName.transform.localRotation;
 					clone.transform.localPosition = new Vector3(hSName.transform.position.x,move,hSName.transform.position.z);
 					clone.GetComponent<Text>().text = currentScore.playerName;
+					clone.transform.SetParent(hSName.transform.parent);
+
 
 					//criar linhas score
 					GameObject clone2 = Instantiate(hSScore,hSScore.transform.position,Quaternion.identity);
@@ -77,17 +80,21 @@ public class ShowLeaderBoard : MonoBehaviour {
 					clone2.transform.localRotation = hSScore.transform.localRotation;
 					clone2.transform.localPosition = new Vector3(hSScore.transform.position.x, move2, hSScore.transform.position.z);
 					clone2.GetComponent<Text>().text = currentScore.score.ToString();
+					clone2.transform.SetParent(hSScore.transform.parent);
 
 					//criar linhas do flag
 
-					if (currentScore.seconds == 0)
-					{
-						GameObject clone3 = Instantiate(hardFlag,hardFlag.transform.position,Quaternion.identity);
+
+					GameObject clone3 = Instantiate(hardFlag,hardFlag.transform.position,Quaternion.identity);
 
 						clone3.transform.SetParent(gameObject.transform);
 						clone3.transform.localScale = hardFlag.transform.localScale;
 						clone3.transform.localRotation = hardFlag.transform.localRotation;
 						clone3.transform.localPosition = new Vector3(hardFlag.transform.position.x, move2, hardFlag.transform.position.z);
+						clone3.transform.SetParent(hardFlag.transform.parent);
+					if (currentScore.seconds == 0)
+					{
+						clone3.GetComponent<Image>().enabled = true;
 					}
 
 						count++;

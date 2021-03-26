@@ -107,6 +107,7 @@ public class LaunchBall : MonoBehaviour {
 		if (gameObject.GetComponent<Counter>().ballCount < gameObject.GetComponent<Counter>().maxBalls)
 			{
 				print("spawn() filter");
+			if (GameObject.FindGameObjectsWithTag("Spawning").Length > 0 || GameObject.FindGameObjectsWithTag("Active").Length > 0) { print("Ball Already Spawning");  yield break; }
 				float waitTime = 1f;
 
 				yield return new WaitForSeconds(waitTime);
@@ -145,7 +146,9 @@ public class LaunchBall : MonoBehaviour {
 			if (gameObject.GetComponent<Counter>().ballCount >= gameObject.GetComponent<Counter>().maxBalls)
 			{ gameObject.GetComponent<Counter>().isLastBall = true; gameObject.GetComponent<MemoryState>().DelGame(); }
 
+			print("calling save counter...");
 			gameObject.GetComponent<Counter>().SavingCounter();
+			
 			}
 		}
 

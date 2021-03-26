@@ -20,11 +20,11 @@ public class CallAd : MonoBehaviour
 
 	public void CallSimpleAd()
 	{
-		////print("Calling simple ad");
-		//if (Advertisement.IsReady("video"))
-		//{
-		//	Advertisement.Show("video");
-		//}
+		 print("Calling simple ad");
+		if (Advertisement.IsReady("video"))
+		{
+			Advertisement.Show("video");
+		}
 
 	}
 }
