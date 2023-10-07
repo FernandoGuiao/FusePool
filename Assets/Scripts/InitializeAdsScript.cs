@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using UnityEngine.Advertisements;
+// using UnityEngine.Advertisements;
 
 public class InitializeAdsScript : MonoBehaviour
 {
@@ -9,6 +9,6 @@ public class InitializeAdsScript : MonoBehaviour
 
     void Start()
     {
-        Advertisement.Initialize(gameId, testMode);
+        // Advertisement.Initialize(gameId, testMode);
     }
 }

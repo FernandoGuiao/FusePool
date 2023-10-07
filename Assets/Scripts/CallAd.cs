@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using UnityEngine;
-using UnityEngine.Advertisements;
+﻿using UnityEngine;
 
 public class CallAd : MonoBehaviour
 {
@@ -15,16 +11,11 @@ public class CallAd : MonoBehaviour
 
 	void Start()
 	{
-		Advertisement.Initialize(gameId, true);
+		//
 	}
 
 	public void CallSimpleAd()
 	{
-		 print("Calling simple ad");
-		if (Advertisement.IsReady("video"))
-		{
-			Advertisement.Show("video");
-		}
-
+		//
 	}
 }
