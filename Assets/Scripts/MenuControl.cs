@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -14,10 +14,8 @@ public class MenuControl : MonoBehaviour {
 	public GameObject Music;
 	public GameObject HTPScreen;
 
-	//Reset The Scene
 	public void Reset()
 	{
-		//gameObject.GetComponent<Ads>().SimpleAdShow();
 		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 	}
 
